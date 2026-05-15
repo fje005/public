@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="frode.jenssen@uit.no">
-<title>eksDato2</title>
+<title>eksDato 2.0</title>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -10,16 +10,17 @@
 
 <script>
 
-  $( function() {
-    $( "#datepicker" ).datepicker({
-      monthNames: [ "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" ],
-      dayNamesMin: [ "Sø", "Ma", "Ti", "On", "To", "Fr", "Lø" ],
-      dateFormat: "dd.mm.yy",
-      currentText: "Now",
-      firstDay: 1,
-numberOfMonths: [ 2, 2 ],
-    } );
-  } );
+$( function() {
+ $( "#datepicker" ).datepicker({
+  monthNames: [ "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" ],
+  dayNamesMin: [ "Sø", "Ma", "Ti", "On", "To", "Fr", "Lø" ],
+  dateFormat: "dd.mm.yy",
+  currentText: "Now",
+  firstDay: 1,
+  numberOfMonths: [ 2, 2 ],
+  showWeek: true,
+ } );
+} );
 
 
 const helligdager = [
@@ -91,7 +92,7 @@ if (edato.getFullYear() < 2026 || sens30.getFullYear() > 2029 ) {
 
 window.onload = function() {
  //document.getElementById('datepicker').value = new Date().toISOString().split('T')[0];
- visdata();
+ //visdata();
  //helligdager.forEach(([dato,helligdag]) => { console.log(`${dato} ${helligdag}`)}); //-- F12
 };
 </script>
@@ -122,7 +123,7 @@ div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
 <body>
  
 <p class="datovelger">Dato: <input type="text" id="datepicker" onchange="visdata()"></p>
-<div id="raadata">&hellip;</div>
+<div id="raadata">Versjon 2.0</div>
 
 <div id="visdata" class="visdata">&hellip;</div>
 
@@ -131,7 +132,7 @@ div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
 <span title="Lov om 1 og 17 mai som høgtidsdager">1. og 17. mai</span>.</p>
 <p>Trekkfrist for samlet vurdering er min(trekkfrist delemner).<br>Sensurfrist for samlet vurdering er max(sensurfrist delemner).</p>
 
-<p>Mens datovelgeren er åpen:<br>PAGE UP: Forrige måned.<br>PAGE DOWN: Neste måned.<br>CTRL + HOME: Inneværende måned.</p>
+<p>Mens datovelgeren er åpen:<br>&emsp;PAGE UP: Forrige måned.<br>&emsp;PAGE DOWN: Neste måned.<br>&emsp;CTRL + HOME: Inneværende måned.</p>
 
 </div>
  
