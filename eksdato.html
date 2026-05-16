@@ -29,7 +29,6 @@ $( function() {
    }
   }
 
-
  } );
 } );
 
@@ -74,7 +73,7 @@ var rdato = `${dag[edato.getDay()]} ${edato.getDate()}. ${mnd[edato.getMonth()]}
  document.getElementById("raadata").innerHTML = rdato;
 
 fedato = `${String(edato.getDate()).padStart(2,'0')}.${String(edato.getMonth()+1).padStart(2,'0')}.${edato.getFullYear()}`;
- document.getElementById("visdata").innerHTML = `<span class="label">Eksamensdato:</span>${fedato}`;
+ document.getElementById("visdata").innerHTML = `<span class="label">Eksamensdato:</span><span class="dato" id="fedato" onclick="copyDate(this.id)">${fedato}</span>`;
 
 ukedag = edato.getDay();
 if ( helligdager.some(tuple => tuple[0] === fedato) || ukedag === 6 || ukedag === 0 ) {
@@ -86,19 +85,23 @@ if ( helligdager.some(tuple => tuple[0] === fedato) || ukedag === 6 || ukedag ==
 var trekkfrist = $( "#datepicker" ).datepicker( "getDate" );
  var trekk = new Date(trekkfrist.setDate(trekkfrist.getDate()-14));
   var ftrekk = `${String(trekk.getDate()).padStart(2,'0')}.${String(trekk.getMonth()+1).padStart(2,'0')}.${trekk.getFullYear()}`;
-   document.getElementById("visdata").innerHTML += `<br><span class="label">Trekkfrist:</span>${ftrekk}`;
-
+   document.getElementById("visdata").innerHTML += `<br><span class="label">Trekkfrist:</span><span class="dato" id="ftrekk" onclick="copyDate(this.id)">${ftrekk}</span>`;
 var sens15 = arbeidsdager( $( "#datepicker" ).datepicker( "getDate" ), 15 );
  var fsens15 = `${String(sens15.getDate()).padStart(2,'0')}.${String(sens15.getMonth()+1).padStart(2,'0')}.${sens15.getFullYear()}`;
-  document.getElementById("visdata").innerHTML += `<br><span class="label">Sensurfrist 15 virkedager:</span>${fsens15}`;
+  document.getElementById("visdata").innerHTML += `<br><span class="label">Sensurfrist 15 virkedager:</span><span class="dato" id="fsens15" onclick="copyDate(this.id)">${fsens15}</span>`;
 
 var sens30 = arbeidsdager( $( "#datepicker" ).datepicker( "getDate" ), 30 );
  var fsens30 = `${String(sens30.getDate()).padStart(2,'0')}.${String(sens30.getMonth()+1).padStart(2,'0')}.${sens30.getFullYear()}`;
-  document.getElementById("visdata").innerHTML += `<br><span class="label">Sensurfrist 30 virkedager:</span>${fsens30}`;
+  document.getElementById("visdata").innerHTML += `<br><span class="label">Sensurfrist 30 virkedager:</span><span class="dato" id="fsens30" onclick="copyDate(this.id)">${fsens30}</span>`;
 
 if (edato.getFullYear() < 2026 || sens30.getFullYear() > 2029 ) {
  document.getElementById("visdata").innerHTML = `<p class="feilmelding">App har ikke helligdager for valgt dato/år!</p>`;
 }
+}
+
+function copyDate(id) {
+ const ctxt = document.getElementById(id).innerHTML;
+ navigator.clipboard.writeText(ctxt);
 }
 
 window.onload = function() {
@@ -118,6 +121,9 @@ input[type=text] { z-index:100; font-size:18px; color:dimgray; width:126px; padd
 #visdata { margin-top:30px; min-width:250px; width:fit-content; padding:16px 25px 25px 25px; background-color:white; border-radius:5px; border:1px solid gainsboro; }
 
 #visdata span.label { display: inline-block; width:250px; font-style:italic; color:dimgray; }
+#visdata span.dato { cursor:pointer; }
+#visdata span.dato:active { color:gainsboro; }
+
 #visdata span.omdag { font-size:18px; color:crimson; }
 #visdata p.feilmelding { font-size:110%; color:crimson; }
 
@@ -141,6 +147,7 @@ div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
  <span title="Prop. 126 L: ikke medregnet lørdager">lørdager</span>, <span title="Lov om helligdager og helligdagsfred">lovbestemte fridager</span> samt 
  <span title="Lov om 1 og 17 mai som høgtidsdager">1. og 17. mai</span>.</p>
  <p>Trekkfrist for samlet vurdering er min(trekkfrist delemner).<br>Sensurfrist for samlet vurdering er max(sensurfrist delemner).</p>
- <p>Mens datovelgeren er åpen:<br>&emsp;PAGE UP: Forrige måned.<br>&emsp;PAGE DOWN: Neste måned.<br>&emsp;CTRL + HOME: Inneværende måned.</p>
+ <p>Datovelger:<br>&emsp;PgUp: Forrige måned.<br>&emsp;PgDn: Neste måned.<br>&emsp;Ctrl + Home: Inneværende måned.</p>
+ <p>Klikk dato for å kopiere dato til Utklipstavlen (Win + V)</p>
 </div>
 </body></html>
