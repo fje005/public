@@ -7,21 +7,31 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
-
 <script>
+
+var date = new Date();
 
 $( function() {
  $( "#datepicker" ).datepicker({
   monthNames: [ "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" ],
   dayNamesMin: [ "Sø", "Ma", "Ti", "On", "To", "Fr", "Lø" ],
   dateFormat: "dd.mm.yy",
-  currentText: "Now",
+  defaultDate: date,
   firstDay: 1,
-  numberOfMonths: [ 2, 2 ],
-  showWeek: true,
+  numberOfMonths: [ 1, 2 ],
+  stepMonths: 2,
+  //showWeek: true,
+
+  onClose: function(date, datepicker) {
+   if (date != "") {
+    document.getElementById("visdata").innerHTML = "&emsp;";
+    setTimeout(() => { visdata(); }, 300);
+   }
+  }
+
+
  } );
 } );
-
 
 const helligdager = [
 ['01.01.2026', 'Første nyttårsdag'],['02.04.2026', 'Skjærtorsdag'],['03.04.2026', 'Langfredag'],['05.04.2026', 'Første påskedag'],
@@ -37,7 +47,6 @@ const helligdager = [
  ['02.04.2029', 'Andre påskedag'],['01.05.2029', 'Arbeidernes dag'],['10.05.2029', 'Kristi himmelfart'],['17.05.2029', 'Grunnlovsdag'],
   ['20.05.2029', 'Første pinsedag'],['21.05.2029', 'Andre pinsedag'],['25.12.2029', 'Første juledag'],['26.12.2029', 'Andre juledag'],
 ['01.01.2030', 'Første nyttårsdag']
-
 ];
 
 function arbeidsdager(startDato, antDager) {
@@ -54,11 +63,15 @@ function arbeidsdager(startDato, antDager) {
  return dato;
 }
 
-
 function visdata() {
 
+const dag = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
+const mnd = ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember',]
+
 var edato = $( "#datepicker" ).datepicker( "getDate" );
- document.getElementById("raadata").innerHTML = edato;
+
+var rdato = `${dag[edato.getDay()]} ${edato.getDate()}. ${mnd[edato.getMonth()]} ${edato.getFullYear()}`;
+ document.getElementById("raadata").innerHTML = rdato;
 
 fedato = `${String(edato.getDate()).padStart(2,'0')}.${String(edato.getMonth()+1).padStart(2,'0')}.${edato.getFullYear()}`;
  document.getElementById("visdata").innerHTML = `<span class="label">Eksamensdato:</span>${fedato}`;
@@ -67,8 +80,6 @@ ukedag = edato.getDay();
 if ( helligdager.some(tuple => tuple[0] === fedato) || ukedag === 6 || ukedag === 0 ) {
  match = helligdager.find(([id]) => id === fedato);
  if (match) { helligdag = "- " + match[1]; } else { helligdag = "er ikke virkedag"; }
- dag = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
- mnd = ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember',]
  document.getElementById("visdata").innerHTML += `<br><span class="omdag">${dag[edato.getDay()]} ${edato.getDate()}. ${mnd[edato.getMonth()]} ${helligdag}</span><br>`;
 }
 
@@ -91,7 +102,6 @@ if (edato.getFullYear() < 2026 || sens30.getFullYear() > 2029 ) {
 }
 
 window.onload = function() {
- //document.getElementById('datepicker').value = new Date().toISOString().split('T')[0];
  //visdata();
  //helligdager.forEach(([dato,helligdag]) => { console.log(`${dato} ${helligdag}`)}); //-- F12
 };
@@ -99,41 +109,38 @@ window.onload = function() {
 
 <style>
 html { font-family:system-ui; font-size:20px; line-height:1.4; margin:0; padding:0; border:0; }
-body {padding:50px; background-color:whitesmoke; }
+body { padding:50px; background-color:#E8E8E8; }
 
-p.datovelger { font-size:80%; color:dimgray; }
+input[type=text] { z-index:100; font-size:18px; color:dimgray; width:126px; padding:4px 0px 4px 10px; box-sizing:border-box; border:1px solid gainsboro; border-radius:5px; cursor:pointer; }
+.spicker { font-size:18px; margin-left:5px; cursor:none; }
 
-#raadata { font-size:12px; color:gray; }
-#visdata { margin-top:40px; width:fit-content; padding:16px 25px 25px 25px; background-color:white; border-radius:5px; border:1px solid gainsboro; }
+#raadata { margin:8px 0px 0px 3px; font-size:12px; color:gray; }
+#visdata { margin-top:30px; min-width:250px; width:fit-content; padding:16px 25px 25px 25px; background-color:white; border-radius:5px; border:1px solid gainsboro; }
 
 #visdata span.label { display: inline-block; width:250px; font-style:italic; color:dimgray; }
 #visdata span.omdag { font-size:18px; color:crimson; }
 #visdata p.feilmelding { font-size:110%; color:crimson; }
 
-div.info { margin-top:40px; width:30px; height:30px; background-color:white; border-radius:15px; border:1px solid gainsboro; box-sizing:border-box; }
+div.info { margin-top:30px; width:30px; height:30px; background-color:white; border-radius:15px; border:1px solid gainsboro; box-sizing:border-box; }
 div.info { font-size:20px; line-height:28px; overflow:hidden; color:white; }
 div.info i { padding-left:11px; color:dimgray; }
 div.info:hover i { display:none; }
 div.info:hover { width:fit-content; height:fit-content; padding:20px 20px 20px 40px; border-radius:5px; line-height:1.4; color:dimgray; }
-div.info:hover { animation-name:infoload; animation-timing-function:ease; animation-duration:200ms; } 
+div.info:hover { animation-name:infoload; animation-timing-function:ease; animation-duration:300ms; } 
 div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
+
+@keyframes infoload { from { width:30px; height:30px;  } to { width:fit-content; height:fit-content; } }
 </style>
 
 </head>
 <body>
- 
-<p class="datovelger">Dato: <input type="text" id="datepicker" onchange="visdata()"></p>
+<input type="text" id="datepicker" placeholder="Datovelger" maxlength="10" readonly /><span class="spicker">&#128197;</span>
 <div id="raadata">Versjon 2.0</div>
-
-<div id="visdata" class="visdata">&hellip;</div>
-
+<div id="visdata" class="visdata">&emsp;</div>
 <div class="info"><i>i</i><p>Virkedager er alle dager unntatt 
-<span title="Prop. 126 L: ikke medregnet lørdager">lørdager</span>, <span title="Lov om helligdager og helligdagsfred">lovbestemte fridager</span> samt 
-<span title="Lov om 1 og 17 mai som høgtidsdager">1. og 17. mai</span>.</p>
-<p>Trekkfrist for samlet vurdering er min(trekkfrist delemner).<br>Sensurfrist for samlet vurdering er max(sensurfrist delemner).</p>
-
-<p>Mens datovelgeren er åpen:<br>&emsp;PAGE UP: Forrige måned.<br>&emsp;PAGE DOWN: Neste måned.<br>&emsp;CTRL + HOME: Inneværende måned.</p>
-
+ <span title="Prop. 126 L: ikke medregnet lørdager">lørdager</span>, <span title="Lov om helligdager og helligdagsfred">lovbestemte fridager</span> samt 
+ <span title="Lov om 1 og 17 mai som høgtidsdager">1. og 17. mai</span>.</p>
+ <p>Trekkfrist for samlet vurdering er min(trekkfrist delemner).<br>Sensurfrist for samlet vurdering er max(sensurfrist delemner).</p>
+ <p>Mens datovelgeren er åpen:<br>&emsp;PAGE UP: Forrige måned.<br>&emsp;PAGE DOWN: Neste måned.<br>&emsp;CTRL + HOME: Inneværende måned.</p>
 </div>
- 
 </body></html>
