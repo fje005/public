@@ -8,6 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
 <script>
+
 var date = new Date();
 
 $( function() {
@@ -19,13 +20,13 @@ $( function() {
   defaultDate: date,
   firstDay: 1,
   numberOfMonths: [ 1, 2 ],
-  stepMonths: 2,
+  stepMonths: 1,
   //showWeek: true,
 
   onClose: function(date, datepicker) {
    if (date != "") {
     document.getElementById("visdata").innerHTML = "&emsp;";
-    setTimeout(() => { visdata(); }, 300);
+    setTimeout(() => { visdata(); document.getElementById("datepicker").blur(); }, 300);
    }
   }
 
@@ -128,12 +129,14 @@ input[type=text] { z-index:100; font-size:18px; color:dimgray; width:126px; padd
 #visdata p.feilmelding { font-size:110%; color:crimson; }
 
 div.info { margin-top:30px; width:30px; height:30px; background-color:white; border-radius:15px; border:1px solid gainsboro; box-sizing:border-box; }
-div.info { font-size:20px; line-height:28px; overflow:hidden; color:white; }
-div.info i { padding-left:11px; color:dimgray; }
+div.info { font-size:18px; line-height:26px; overflow:hidden; color:white; }
+div.info i { font-size:20px; line-height:28px; padding-left:11px; color:dimgray; }
 div.info:hover i { display:none; }
-div.info:hover { width:fit-content; height:fit-content; padding:20px 20px 20px 40px; border-radius:5px; line-height:1.4; color:dimgray; }
+div.info:hover { width:fit-content; height:fit-content; padding:20px 30px 20px 40px; border-radius:5px; line-height:1.4; color:dimgray; }
 div.info:hover { animation-name:infoload; animation-timing-function:ease; animation-duration:300ms; } 
 div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
+
+div.info code { padding:0 3px 0 3px; border-radius:3px; outline:1px solid gainsboro; }
 
 @keyframes infoload { from { width:30px; height:30px;  } to { width:fit-content; height:fit-content; } }
 </style>
@@ -146,8 +149,8 @@ div.info span { border-bottom:1px dotted black; color:dimgray; cursor:pointer; }
 <div class="info"><i>i</i><p>Virkedager er alle dager unntatt 
  <span title="Prop. 126 L: ikke medregnet lørdager">lørdager</span>, <span title="Lov om helligdager og helligdagsfred">lovbestemte fridager</span> samt 
  <span title="Lov om 1 og 17 mai som høgtidsdager">1. og 17. mai</span>.</p>
+ <p>Datovelger:<br>&emsp;<code>PgUp</code>&emsp;for forrige måned<br>&emsp;<code>PgDn</code>&emsp;for neste måned<br>&emsp;<code>Ctrl</code>+<code>Home</code>&emsp;for inneværende måned</p>
+ <p>Klikk dato for å kopierer dato til Utklipstavlen.</p> 
  <p>Trekkfrist for samlet vurdering er min(trekkfrist delemner).<br>Sensurfrist for samlet vurdering er max(sensurfrist delemner).</p>
- <p>Datovelger:<br>&emsp;PgUp: Forrige måned.<br>&emsp;PgDn: Neste måned.<br>&emsp;Ctrl + Home: Inneværende måned.</p>
- <p>Klikk dato for å kopiere dato til Utklipstavlen (Win + V).</p>
 </div>
 </body></html>
